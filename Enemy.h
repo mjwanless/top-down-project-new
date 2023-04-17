@@ -1,6 +1,7 @@
 #include "raylib.h"
+#include "BaseCharacter.h"
 
-class Enemy
+class Enemy : public BaseCharacter
 {
 
 public:
