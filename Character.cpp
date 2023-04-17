@@ -1,5 +1,6 @@
 #include "Character.h"
 #include "raymath.h"
+#include "raylib.h"
 
 Character::Character()
 {
