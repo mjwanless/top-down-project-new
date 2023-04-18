@@ -33,6 +33,8 @@ int main()
        // held
    };
 
+   goblin.setTarget(&knight);
+
    SetTargetFPS(60);
    while (!WindowShouldClose())
    {
