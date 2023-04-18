@@ -3,6 +3,7 @@
 #include "Character.h"
 #include "Prop.h"
 #include "Enemy.h"
+#include <string>
 
 int main()
 {
@@ -26,12 +27,30 @@ int main()
    };
 
    Enemy goblin{
-       Vector2{},
+       Vector2{800.0f, 300.0f},
        LoadTexture("characters/goblin_idle_spritesheet.png"),
        LoadTexture("characters/goblin_run_spritesheet.png")
 
        // held
    };
+
+   Enemy slime{
+       Vector2{500.0f, 700.0f},
+       LoadTexture("characters/slime_idle_spritesheet.png"),
+       LoadTexture("characters/slime_run_spritesheet.png")
+
+   };
+
+   Enemy *enemies[]{
+       &goblin,
+       &slime
+
+   };
+
+   for (auto enemy : enemies)
+   {
+      enemy->setTarget(&knight);
+   }
 
    goblin.setTarget(&knight);
 
@@ -49,6 +68,19 @@ int main()
       for (auto prop : props)
       {
          prop.Render(knight.getWorldPos());
+      }
+
+      if (!knight.getAlive())
+      {
+         DrawText("Game Over!", 55.0f, 45.0f, 40, RED);
+         EndDrawing();
+         continue;
+      }
+      else
+      {
+         std::string knightsHealth = "Health: ";
+         knightsHealth.append(std::to_string(knight.getHealth()), 0, 4);
+         DrawText(knightsHealth.c_str(), 55.0f, 45.0f, 40, RED);
       }
 
       knight.tick(GetFrameTime());
@@ -70,13 +102,21 @@ int main()
          }
       }
 
+      for (auto enemy : enemies)
+      {
+         enemy->tick(GetFrameTime());
+      }
+
       goblin.tick(GetFrameTime());
 
       if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
       {
-         if (CheckCollisionRecs(goblin.getCollisionRec(), knight.getWeaponCollisionRec()))
+         for (auto enemy : enemies)
          {
-            goblin.setAlive(false);
+            if (CheckCollisionRecs(goblin.getCollisionRec(), knight.getWeaponCollisionRec()))
+            {
+               goblin.setAlive(false);
+            }
          }
       }
 
