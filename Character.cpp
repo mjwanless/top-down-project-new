@@ -40,4 +40,9 @@ void Character::tick(float deltaTime)
       velocity.y += 1.0;
    }
    BaseCharacter::tick(deltaTime);
+
+   // Draw the sword
+   Rectangle source{0.0f, 0.0f, static_cast<float>(weapon.width) * rightLeft, static_cast<float>(weapon.height)};
+   Rectangle dest{getScreenPos().x, getScreenPos().y, weapon.width * scale, weapon.height * scale};
+   DrawTexturePro(weapon, source, dest, {}, 0.0f, WHITE);
 }
